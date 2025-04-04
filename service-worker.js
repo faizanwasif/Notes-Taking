@@ -27,7 +27,9 @@ const STATIC_ASSETS = [
   '/Notes-Taking/assets/icons/icon-384x384.png',
   '/Notes-Taking/assets/icons/icon-512x512.png',
   '/Notes-Taking/assets/icons/note-icon-96x96.png',
-  '/Notes-Taking/assets/icons/task-icon-96x96.png'
+  '/Notes-Taking/assets/icons/task-icon-96x96.png',
+  '/Notes-Taking/node_modules/tesseract.js/dist/tesseract.min.js',
+  '/Notes-Taking/node_modules/tesseract.js/dist/worker.min.js',
 ];
 
 // Install event - cache assets

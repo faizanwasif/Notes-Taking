@@ -16,6 +16,16 @@ const App = {
      */
     init: function() {
         console.log('Initializing NotePal v1.0.0');
+
+        // Load OCR module only if mediaDevices is available
+        if ('mediaDevices' in navigator) {
+            // Dynamically import OCR manager to avoid loading it unnecessarily
+            import('./js/ocr-manager.js').then(() => {
+                OCRManager.init();
+            }).catch(err => {
+                console.error('Failed to load OCR module:', err);
+            });
+        }
         
         // Initialize data manager
         DataManager.init();
@@ -98,5 +108,4 @@ const App = {
             }
         }
     }
-    
 };

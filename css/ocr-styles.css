@@ -1,0 +1,180 @@
+/* OCR Feature Styles */
+
+/* OCR Button */
+.ocr-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.ocr-button:hover {
+    opacity: 0.9;
+}
+
+/* OCR Dropdown Menu */
+.ocr-menu {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    overflow: hidden;
+    width: 180px;
+}
+
+.ocr-menu-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.ocr-menu-item:hover {
+    background-color: var(--card-color);
+    color: var(--primary-color);
+}
+
+/* Loading Indicator */
+.ocr-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ocr-loading-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ocr-loading-content {
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    max-width: 300px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.ocr-status {
+    margin: 16px 0 8px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.ocr-progress {
+    color: var(--primary-color);
+    font-size: 14px;
+}
+
+/* Camera Interface */
+.camera-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+}
+
+.camera-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.camera-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#camera-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.camera-controls button {
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.camera-controls button:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+#capture-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Spinner Animation */
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .camera-controls {
+        bottom: 10px;
+    }
+    
+    .camera-controls button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    .ocr-loading-content {
+        max-width: 260px;
+        padding: 16px;
+    }
+}
