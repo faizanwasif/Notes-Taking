@@ -1,33 +1,33 @@
 /**
- * NotePal Service Worker
+ * NotePal Service Worker for GitHub Pages
  * Handles caching for offline use, background sync, and push notifications
  */
 
 const CACHE_NAME = 'notepal-cache-v1';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/css/style.css',
-  '/css/themes.css',
-  '/js/utils.js',
-  '/js/data-manager.js',
-  '/js/note-manager.js',
-  '/js/task-manager.js',
-  '/js/canvas-manager.js',
-  '/js/ui-manager.js',
-  '/js/app.js',
-  '/assets/icons/favicon.ico',
-  '/assets/icons/icon-72x72.png',
-  '/assets/icons/icon-96x96.png',
-  '/assets/icons/icon-128x128.png',
-  '/assets/icons/icon-144x144.png',
-  '/assets/icons/icon-152x152.png',
-  '/assets/icons/icon-192x192.png',
-  '/assets/icons/icon-384x384.png',
-  '/assets/icons/icon-512x512.png',
-  '/assets/icons/note-icon-96x96.png',
-  '/assets/icons/task-icon-96x96.png'
+  '/Notes-Taking/',
+  '/Notes-Taking/index.html',
+  '/Notes-Taking/manifest.json',
+  '/Notes-Taking/css/style.css',
+  '/Notes-Taking/css/themes.css',
+  '/Notes-Taking/js/utils.js',
+  '/Notes-Taking/js/data-manager.js',
+  '/Notes-Taking/js/note-manager.js',
+  '/Notes-Taking/js/task-manager.js',
+  '/Notes-Taking/js/canvas-manager.js',
+  '/Notes-Taking/js/ui-manager.js',
+  '/Notes-Taking/js/app.js',
+  '/Notes-Taking/assets/icons/favicon.ico',
+  '/Notes-Taking/assets/icons/icon-72x72.png',
+  '/Notes-Taking/assets/icons/icon-96x96.png',
+  '/Notes-Taking/assets/icons/icon-128x128.png',
+  '/Notes-Taking/assets/icons/icon-144x144.png',
+  '/Notes-Taking/assets/icons/icon-152x152.png',
+  '/Notes-Taking/assets/icons/icon-192x192.png',
+  '/Notes-Taking/assets/icons/icon-384x384.png',
+  '/Notes-Taking/assets/icons/icon-512x512.png',
+  '/Notes-Taking/assets/icons/note-icon-96x96.png',
+  '/Notes-Taking/assets/icons/task-icon-96x96.png'
 ];
 
 // Install event - cache assets
@@ -111,7 +111,7 @@ self.addEventListener('fetch', event => {
             
             // For HTML navigation requests, respond with app shell
             if (event.request.mode === 'navigate') {
-              return caches.match('/index.html');
+              return caches.match('/Notes-Taking/index.html');
             }
             
             // Otherwise, just propagate the error
@@ -134,7 +134,7 @@ self.addEventListener('sync', event => {
 self.addEventListener('push', event => {
   console.log('Service Worker: Push received');
   
-  let data = { title: 'NotePal', body: 'You have a new notification', url: '/' };
+  let data = { title: 'NotePal', body: 'You have a new notification', url: '/Notes-Taking/' };
   
   if (event.data) {
     try {
@@ -146,8 +146,8 @@ self.addEventListener('push', event => {
   
   const options = {
     body: data.body,
-    icon: '/assets/icons/icon-192x192.png',
-    badge: '/assets/icons/icon-72x72.png',
+    icon: '/Notes-Taking/assets/icons/icon-192x192.png',
+    badge: '/Notes-Taking/assets/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
     data: {
       url: data.url
@@ -166,7 +166,7 @@ self.addEventListener('notificationclick', event => {
   event.notification.close();
   
   // Open the URL from the notification data if available
-  let url = '/';
+  let url = '/Notes-Taking/';
   if (event.notification.data && event.notification.data.url) {
     url = event.notification.data.url;
   }
