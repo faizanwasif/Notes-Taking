@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4285f4">
+    <meta name="description" content="A lightweight notepad and task manager PWA">
+    <title>NotePal - Notes & Tasks</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="assets/icons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>📝</span>
+            <span>NotePal</span>
+        </div>
+        <div class="header-actions">
+            <button id="newItemBtn" class="btn">New Item</button>
+            <button id="syncBtn" class="btn btn-icon" title="Sync Data">🔄</button>
+            <button id="settingsBtn" class="btn btn-icon" title="Settings">⚙️</button>
+            <button id="installBtn" class="btn" style="display: none;">Install App</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="sidebar">
+            <div class="search-bar">
+                <i>🔍</i>
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+
+            <div class="tab-container">
+                <div class="tab active" data-tab="notes">Notes</div>
+                <div class="tab" data-tab="tasks">Tasks</div>
+            </div>
+
+            <div class="tab-content active" id="notesContent">
+                <ul class="item-list" id="notesList"></ul>
+            </div>
+
+            <div class="tab-content" id="tasksContent">
+                <div class="category">
+                    <div class="category-header">
+                        <span>Upcoming</span>
+                        <span>🔽</span>
+                    </div>
+                    <ul class="category-items item-list" id="upcomingTasksList"></ul>
+                </div>
+                <div class="category">
+                    <div class="category-header">
+                        <span>Today</span>
+                        <span>🔽</span>
+                    </div>
+                    <ul class="category-items item-list" id="todayTasksList"></ul>
+                </div>
+                <div class="category">
+                    <div class="category-header">
+                        <span>Completed</span>
+                        <span>🔽</span>
+                    </div>
+                    <ul class="category-items item-list" id="completedTasksList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <button class="sidebar-toggle">◀</button>
+
+        <div class="content">
+            <div class="tab-container">
+                <div class="tab active" data-tab="editor">Editor</div>
+                <div class="tab" data-tab="canvas">Drawing</div>
+            </div>
+
+            <div class="tab-content active" id="editorContent">
+                <div class="note-editor" id="noteEditor">
+                    <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Note Title">
+                    <div class="toolbar" id="editorToolbar">
+                        <select id="fontSelect">
+                            <option value="default">Default Font</option>
+                            <option value="arial">Arial</option>
+                            <option value="times">Times New Roman</option>
+                            <option value="courier">Courier New</option>
+                            <option value="georgia">Georgia</option>
+                            <option value="verdana">Verdana</option>
+                        </select>
+                        <select id="fontSizeSelect">
+                            <option value="1">Small</option>
+                            <option value="2">Medium</option>
+                            <option value="3" selected>Normal</option>
+                            <option value="4">Large</option>
+                            <option value="5">X-Large</option>
+                        </select>
+                        <button data-command="bold" title="Bold"><b>B</b></button>
+                        <button data-command="italic" title="Italic"><i>I</i></button>
+                        <button data-command="underline" title="Underline"><u>U</u></button>
+                        <button data-command="strikeThrough" title="Strike through"><s>S</s></button>
+                        <button data-command="insertUnorderedList" title="Bullet List">• List</button>
+                        <button data-command="insertOrderedList" title="Numbered List">1. List</button>
+                        <button data-command="justifyLeft" title="Align Left">⬅️</button>
+                        <button data-command="justifyCenter" title="Align Center">⬆️</button>
+                        <button data-command="justifyRight" title="Align Right">➡️</button>
+                        <button data-command="createLink" title="Insert Link">🔗</button>
+                        <button title="Set Reminder">⏰</button>
+                    </div>
+                    <div class="editor-container">
+                        <div class="note-content" id="noteContent" contenteditable="true"></div>
+                    </div>
+                    <div class="toolbar">
+                        <button id="saveNoteBtn" class="btn">Save</button>
+                        <button id="deleteNoteBtn" class="btn btn-secondary">Delete</button>
+                    </div>
+                </div>
+
+                <div class="task-editor" id="taskEditor" style="display: none;">
+                    <div class="task-info">
+                        <input type="text" id="taskTitleInput" class="task-title-input" placeholder="Task Title">
+                        <input type="date" id="taskDueDateInput">
+                        <select id="taskPrioritySelect">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        <select id="taskCategorySelect">
+                            <option value="none">No Category</option>
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="health">Health</option>
+                        </select>
+                    </div>
+                    <div class="note-content" id="taskDescription" contenteditable="true" placeholder="Task Description"></div>
+                    <div class="toolbar">
+                        <button id="saveTaskBtn" class="btn">Save</button>
+                        <button id="completeTaskBtn" class="btn">Mark Complete</button>
+                        <button id="deleteTaskBtn" class="btn btn-secondary">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="canvasContent">
+                <div class="canvas-container">
+                    <div class="canvas-toolbar">
+                        <button id="penTool" class="btn active">Pen</button>
+                        <button id="highlighterTool" class="btn">Highlighter</button>
+                        <button id="eraserTool" class="btn">Eraser</button>
+                        <input type="color" id="colorPicker" value="#000000">
+                        <input type="range" id="sizeSlider" min="1" max="50" value="5">
+                        <button id="clearCanvas" class="btn btn-secondary">Clear</button>
+                        <button id="saveCanvas" class="btn">Save</button>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="drawingCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal" id="newItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Create New Item</div>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="newItemType">
+                        <option value="note">Note</option>
+                        <option value="task">Task</option>
+                        <option value="drawing">Drawing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="newItemTitle" placeholder="Enter title">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="createItemBtn" class="btn">Create</button>
+                <button class="btn btn-secondary modal-close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Settings</div>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Theme</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Light</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="themeToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Dark</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Default Font</label>
+                    <select id="defaultFontSetting">
+                        <option value="default">Default</option>
+                        <option value="arial">Arial</option>
+                        <option value="times">Times New Roman</option>
+                        <option value="courier">Courier New</option>
+                        <option value="georgia">Georgia</option>
+                        <option value="verdana">Verdana</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Auto-save Interval (seconds)</label>
+                    <input type="number" id="autoSaveInterval" min="5" max="300" value="30">
+                </div>
+                <div class="form-group">
+                    <button id="viewShortcutsBtn" class="btn">View Keyboard Shortcuts</button>
+                </div>
+                <div class="form-group">
+                    <button id="exportDataBtn" class="btn">Export All Data</button>
+                    <button id="importDataBtn" class="btn">Import Data</button>
+                    <input type="file" id="importFileInput" class="hidden-input" accept=".json">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettingsBtn" class="btn">Save Settings</button>
+                <button class="btn btn-secondary modal-close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="shortcutsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Keyboard Shortcuts</div>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <table class="shortcuts-table">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Shortcut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>New Note</td>
+                            <td><span class="key-combo">Ctrl</span> + <span class="key-combo">Alt</span> + <span class="key-combo">N</span></td>
+                        </tr>
+                        <tr>
+                            <td>New Task</td>
+                            <td><span class="key-combo">Ctrl</span> + <span class="key-combo">Alt</span> + <span class="key-combo">T</span></td>
+                        </tr>
+                        <tr>
+                            <td>Save Current Item</td>
+                            <td><span class="key-combo">Ctrl</span> + <span class="key-combo">S</span></td>
+                        </tr>
+                        <tr>
+                            <td>Toggle Sidebar</td>
+                            <td><span class="key-combo">Ctrl</span> + <span class="key-combo">B</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <label>Customize Shortcut for New Note:</label>
+                    <input type="text" id="newNoteShortcutInput" placeholder="e.g. Ctrl+Alt+N" value="Ctrl+Alt+N">
+                </div>
+                <div class="form-group">
+                    <label>Customize Shortcut for New Task:</label>
+                    <input type="text" id="newTaskShortcutInput" placeholder="e.g. Ctrl+Alt+T" value="Ctrl+Alt+T">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveShortcutsBtn" class="btn">Save Changes</button>
+                <button class="btn btn-secondary modal-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Set Reminder</div>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Reminder Title</label>
+                    <input type="text" id="reminderTitle" placeholder="Enter title">
+                </div>
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <input type="datetime-local" id="reminderDateTime">
+                </div>
+                <div class="form-group">
+                    <label>Repeat</label>
+                    <select id="reminderRepeat">
+                        <option value="none">Don't repeat</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div class="form-group" id="customRepeatContainer" style="display: none;">
+                    <label>Custom Repeat (days)</label>
+                    <input type="number" id="customRepeatDays" min="1" max="365" value="7">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveReminderBtn" class="btn">Save</button>
+                <button class="btn btn-secondary modal-close-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <div class="notification-title">Notification Title</div>
+        <div class="notification-body">Notification content goes here.</div>
+        <div class="notification-actions">
+            <button class="btn">Action</button>
+            <button class="btn btn-secondary">Dismiss</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/utils.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/note-manager.js"></script>
+    <script src="js/task-manager.js"></script>
+    <script src="js/canvas-manager.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Register service worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
